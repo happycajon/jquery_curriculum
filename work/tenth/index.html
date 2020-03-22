@@ -26,6 +26,45 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+
+      $(function(){
+        $('#js-search-button').on('click', function() {
+          searchword();
+        });
+        function searchword(){
+          var keyword = $('.search__btn').val();
+          $.ajax({
+            url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+            type: 'GET',
+            datatype: 'json',
+            data: {
+              // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
+              applicationId: '1019399324990976605', // (今回はこのIDを使用してください) ※IDは他サイト等には絶対に転載しないでください
+              booksGenreId: '001',
+              keyword: 'keyword',
+              hits: '20',
+              page: '1',
+            },
+          }).done(function(data) {
+            // この中にデータ取得後の動きを記述していきます。
+            success();
+            console.log(data);
+          }).fail(function() {
+            failMessage();
+          });
+        }//ここまで関数　searchword
+
+
+        function success() {
+          // ①ここにif（検索結果の表示）とelse if（検索結果が０件）を書く
+          // ②ページャに関する記述もここ
+        }
+        function failMessage() {
+          // ここに（通信に失敗した場合）を書く
+        }
+      });//ここまでおまじない
+
+
       // 楽天ブックスの総合検索APIを使って製作してください。
       // answerの挙動を良く見てね！
       //
@@ -54,7 +93,7 @@
       //
       //
       // $.ajaxによってデータが取得できたら、必要なデータ(作品名とか作者名とか)を取得します。
-      // 取得できたらHTMLに<ul class='lists'></ul>を用意しているので、その中に下のテンプレに沿ってデータを入れ込みましょう。
+      // 取得できたらHTMLに<ul class='lists'></ul>を用意しているので、下のテンプレに沿ってデータを入れ込みましょう。
       // <li class='lists__item'>
       //  <div class='lists__item__inner'>
       //    <a href='' class='lists__item__link' target='_blank'>
@@ -66,8 +105,24 @@
       //  </div>
       // </li>
       //
+      // 取得できた書籍の件数をもとに、ページャを作成しましょう
+      // ページャの条件
+      // ├ 「前へ」と「次へ」のボタンがある
+      // ├ 1ページ目では「前へ」に、最後のページでは「次へ」にdisabledクラスをつけて非活性（使用不能）にする
+      // └ 1ページしかない場合はどちらもdisabledクラスをつけて非活性にする
+      // 
+      // ページャのテンプレート
+      // <div class="js-pager">
+      //   <ul class="btn-wrapper">
+      //     <li class="prev btn-item"><a class="btn-anchor" href="">前へ</a></li>
+      //     <li class="next btn-item"><a class="btn-anchor" href="">次へ</a></li>
+      //   </ul>
+      // </div>
       //
       //
+
+
+
     </script>
   </body>
 </html>
